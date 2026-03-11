@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treino Técnico Abizael — EdyMichaelCover</title>
+
+<style>
+:root{
+  --bg:#070707;
+  --panel:#111111;
+  --panel-2:#171717;
+  --gold:#d4af37;
+  --gold-2:#f0d77a;
+  --text:#f4f1e8;
+  --muted:#bdb7a7;
+  --danger:#ff6b6b;
+  --ok:#79d98c;
+  --line:rgba(212,175,55,.28);
+  --shadow:0 12px 30px rgba(0,0,0,.35);
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(212,175,55,.10), transparent 20%),
+    linear-gradient(180deg, #050505, #0b0b0b 45%, #090909 100%);
+  color:var(--text);
+}
+
+.wrap{
+  max-width:1400px;
+  margin:auto;
+  padding:24px;
+}
+
+.hero{
+  background:linear-gradient(135deg, rgba(212,175,55,.12), rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+}
+
+.brand{
+  display:inline-block;
+  padding:6px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--gold-2);
+  background:rgba(212,175,55,.08);
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.clock{
+  font-size:34px;
+  font-weight:bold;
+  color:var(--gold-2);
+  font-family:monospace;
+  letter-spacing:3px;
+  margin-bottom:15px;
+}
+
+.hero h1{
+  margin:0 0 8px 0;
+  color:var(--gold-2);
+}
+
+.hero p{
+  color:var(--muted);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:20px;
+}
+
+.panel{
+  background:linear-gradient(180deg, var(--panel), var(--panel-2));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+
+h2,h3{
+  color:var(--gold-2);
+  margin-top:0;
+}
+
+label{
+  display:block;
+  margin:10px 0 6px;
+  color:var(--gold-2);
+  font-weight:bold;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0e0e0e;
+  color:white;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+button{
+  padding:10px 16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  margin:6px 6px 0 0;
+}
+
+.primary{
+  background:var(--gold);
+  color:black;
+}
+
+.secondary{
+  background:#222;
+  color:white;
+  border:1px solid #444;
+}
+
+.danger{
+  background:#400;
+  color:white;
+}
+
+.success{
+  background:#163;
+  color:#d9ffd9;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #333;
+  text-align:left;
+  vertical-align:top;
+}
+
+th{
+  color:var(--gold-2);
+}
+
+.small{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.ok{ background:#163; color:#aaffaa; }
+.warn{ background:#664400; color:#ffe28a; }
+.alert{ background:#5a1111; color:#ffb0b0; }
+
+.score-box{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:12px;
+}
+
+.resultado{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(212,175,55,.05);
+}
+
+.top-actions{
+  margin-top:16px;
+}
+
+.footer-note{
+  text-align:center;
+  color:var(--muted);
+  margin-top:18px;
+  font-size:13px;
+}
+
+@media print{
+  body{
+    background:white !important;
+    color:black !important;
+  }
+  .panel, .hero{
+    box-shadow:none !important;
+    border:1px solid #999 !important;
+    background:white !important;
+    color:black !important;
+  }
+  .clock, .brand, h1, h2, h3, label, th{
+    color:black !important;
+  }
+  input, select, textarea{
+    color:black !important;
+    background:white !important;
+    border:1px solid #999 !important;
+  }
+  button{
+    display:none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="brand">EdyMichaelCover • Treino Técnico Abizael</div>
+    <div id="clock" class="clock">00:00:00</div>
+    <h1>Programa de Ensaio da Manhã</h1>
+    <p>
+      Sistema individual com ajuste de horário, agenda semanal, avaliação automática,
+      ranking de evolução e salvamento no navegador.
+    </p>
+
+    <div class="top-actions">
+      <button class="primary" onclick="salvarTudo()">Salvar no navegador</button>
+      <button class="secondary" onclick="window.print()">Exportar em PDF</button>
+      <button class="danger" onclick="limparTudo()">Limpar tudo</button>
+    </div>
+  </section>
+
+  <div class="grid">
+
+    <section class="panel">
+      <h2>1. Ajuste de Horário do Ensaio</h2>
+
+      <label for="nomeDancarino">Dançarino</label>
+      <select id="nomeDancarino">
+        <option>Abizael</option>
+        <option>Patrick</option>
+        <option>Renan</option>
+        <option>Jhonny Mendes</option>
+      </select>
+
+      <label for="dataEnsaio">Data do ensaio</label>
+      <input type="date" id="dataEnsaio">
+
+      <label for="inicioEnsaio">Início</label>
+      <input type="time" id="inicioEnsaio" value="08:30">
+
+      <label for="fimEnsaio">Fim</label>
+      <input type="time" id="fimEnsaio" value="10:00">
+
+      <label for="localEnsaio">Local</label>
+      <input type="text" id="localEnsaio" placeholder="Ex.: sala de ensaio / palco / terceiro piso">
+
+      <label for="obsEnsaio">Observações</label>
+      <textarea id="obsEnsaio" placeholder="Ex.: foco em ritmo, entradas, postura e limpeza coreográfica"></textarea>
+
+      <button class="primary" onclick="salvarHorario()">Salvar horário</button>
+
+      <div class="resultado" id="resumoHorario">
+        Nenhum horário salvo ainda.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Agenda Semanal Individual</h2>
+
+      <label for="segunda">Segunda-feira</label>
+      <input type="text" id="segunda" placeholder="08:30 às 10:00 — Técnica / alongamento">
+
+      <label for="terca">Terça-feira</label>
+      <input type="text" id="terca" placeholder="08:30 às 10:00 — Passos e musicalidade">
+
+      <label for="quarta">Quarta-feira</label>
+      <input type="text" id="quarta" placeholder="08:30 às 10:00 — Limpeza coreográfica">
+
+      <label for="quinta">Quinta-feira</label>
+      <input type="text" id="quinta" placeholder="08:30 às 10:00 — Formação e marcação">
+
+      <label for="sexta">Sexta-feira</label>
+      <input type="text" id="sexta" placeholder="08:30 às 10:00 — Simulação de palco">
+
+      <label for="sabado">Sábado</label>
+      <input type="text" id="sabado" placeholder="Opcional">
+
+      <label for="domingo">Domingo</label>
+      <input type="text" id="domingo" placeholder="Opcional">
+
+      <button class="primary" onclick="salvarAgenda()">Salvar agenda semanal</button>
+
+      <div class="resultado" id="resumoAgenda">
+        Agenda semanal ainda não salva.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>3. Avaliação Automática do Abizael</h2>
+
+      <div class="score-box">
+        <div>
+          <label for="ritmo">Ritmo (0 a 10)</label>
+          <input type="number" id="ritmo" min="0" max="10" value="8">
+        </div>
+        <div>
+          <label for="coordenacao">Coordenação (0 a 10)</label>
+          <input type="number" id="coordenacao" min="0" max="10" value="8">
+        </div>
+        <div>
+          <label for="energia">Energia (0 a 10)</label>
+          <input type="number" id="energia" min="0" max="10" value="8">
+        </div>
+        <div>
+          <label for="memoria">Memorização (0 a 10)</label>
+          <input type="number" id="memoria" min="0" max="10" value="8">
+        </div>
+        <div>
+          <label for="postura">Postura (0 a 10)</label>
+          <input type="number" id="postura" min="0" max="10" value="8">
+        </div>
+        <div>
+          <label for="presenca">Presença de palco (0 a 10)</label>
+          <input type="number" id="presenca" min="0" max="10" value="8">
+        </div>
+      </div>
+
+      <label for="comentarioAvaliacao">Comentário técnico</label>
+      <textarea id="comentarioAvaliacao" placeholder="Ex.: melhorou no tempo musical, precisa reforçar finalização dos braços"></textarea>
+
+      <button class="primary" onclick="avaliarAbizael()">Calcular avaliação</button>
+
+      <div class="resultado" id="resultadoAvaliacao">
+        Aguardando avaliação.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>4. Ranking de Evolução dos Dançarinos</h2>
+
+      <label for="rankingNome">Nome do dançarino</label>
+      <select id="rankingNome">
+        <option>Abizael</option>
+        <option>Patrick</option>
+        <option>Renan</option>
+        <option>Jhonny Mendes</option>
+      </select>
+
+      <label for="rankingNota">Nota de evolução (0 a 10)</label>
+      <input type="number" id="rankingNota" min="0" max="10" step="0.1" value="8.0">
+
+      <label for="rankingObs">Observação</label>
+      <input type="text" id="rankingObs" placeholder="Ex.: evoluiu no sincronismo e presença de palco">
+
+      <button class="primary" onclick="adicionarRanking()">Adicionar no ranking</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Dançarino</th>
+            <th>Nota</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody id="rankingTabela"></tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <section class="panel">
+    <h2>5. Resumo Geral</h2>
+    <div id="painelResumo" class="resultado">
+      Nenhum dado salvo ainda.
+    </div>
+  </section>
+
+  <div class="footer-note">
+    EdyMichaelCover • Sistema técnico de ensaio individual • salvamento automático no navegador
+  </div>
+
+</div>
+
+<script>
+function atualizarRelogio(){
+  const agora = new Date();
+  let h = agora.getHours().toString().padStart(2,'0');
+  let m = agora.getMinutes().toString().padStart(2,'0');
+  let s = agora.getSeconds().toString().padStart(2,'0');
+  document.getElementById("clock").innerHTML = h + ":" + m + ":" + s;
+}
+setInterval(atualizarRelogio,1000);
+atualizarRelogio();
+
+let ranking = JSON.parse(localStorage.getItem("rankingEdyMichaelCover")) || [];
+
+function salvarHorario(){
+  const horario = {
+    nome: document.getElementById("nomeDancarino").value,
+    data: document.getElementById("dataEnsaio").value,
+    inicio: document.getElementById("inicioEnsaio").value,
+    fim: document.getElementById("fimEnsaio").value,
+    local: document.getElementById("localEnsaio").value,
+    obs: document.getElementById("obsEnsaio").value
+  };
+
+  localStorage.setItem("horarioAbizael", JSON.stringify(horario));
+
+  document.getElementById("resumoHorario").innerHTML = `
+    <strong>Dançarino:</strong> ${horario.nome}<br>
+    <strong>Data:</strong> ${horario.data || '-'}<br>
+    <strong>Horário:</strong> ${horario.inicio || '-'} até ${horario.fim || '-'}<br>
+    <strong>Local:</strong> ${horario.local || '-'}<br>
+    <strong>Observações:</strong> ${horario.obs || '-'}
+  `;
+
+  atualizarResumoGeral();
+}
+
+function salvarAgenda(){
+  const agenda = {
+    segunda: document.getElementById("segunda").value,
+    terca: document.getElementById("terca").value,
+    quarta: document.getElementById("quarta").value,
+    quinta: document.getElementById("quinta").value,
+    sexta: document.getElementById("sexta").value,
+    sabado: document.getElementById("sabado").value,
+    domingo: document.getElementById("domingo").value
+  };
+
+  localStorage.setItem("agendaAbizael", JSON.stringify(agenda));
+
+  document.getElementById("resumoAgenda").innerHTML = `
+    <strong>Segunda:</strong> ${agenda.segunda || '-'}<br>
+    <strong>Terça:</strong> ${agenda.terca || '-'}<br>
+    <strong>Quarta:</strong> ${agenda.quarta || '-'}<br>
+    <strong>Quinta:</strong> ${agenda.quinta || '-'}<br>
+    <strong>Sexta:</strong> ${agenda.sexta || '-'}<br>
+    <strong>Sábado:</strong> ${agenda.sabado || '-'}<br>
+    <strong>Domingo:</strong> ${agenda.domingo || '-'}
+  `;
+
+  atualizarResumoGeral();
+}
+
+function avaliarAbizael(){
+  const ritmo = Number(document.getElementById("ritmo").value) || 0;
+  const coordenacao = Number(document.getElementById("coordenacao").value) || 0;
+  const energia = Number(document.getElementById("energia").value) || 0;
+  const memoria = Number(document.getElementById("memoria").value) || 0;
+  const postura = Number(document.getElementById("postura").value) || 0;
+  const presenca = Number(document.getElementById("presenca").value) || 0;
+  const comentario = document.getElementById("comentarioAvaliacao").value;
+
+  const media = ((ritmo + coordenacao + energia + memoria + postura + presenca) / 6).toFixed(2);
+
+  let classificacao = "";
+  let classe = "";
+
+  if(media >= 9){
+    classificacao = "Excelente evolução";
+    classe = "badge ok";
+  }else if(media >= 7){
+    classificacao = "Bom desempenho";
+    classe = "badge warn";
+  }else{
+    classificacao = "Precisa reforço técnico";
+    classe = "badge alert";
+  }
+
+  const avaliacao = {
+    nome: "Abizael",
+    ritmo,
+    coordenacao,
+    energia,
+    memoria,
+    postura,
+    presenca,
+    media,
+    classificacao,
+    comentario
+  };
+
+  localStorage.setItem("avaliacaoAbizael", JSON.stringify(avaliacao));
+
+  document.getElementById("resultadoAvaliacao").innerHTML = `
+    <strong>Média final:</strong> ${media}<br>
+    <strong>Classificação:</strong> <span class="${classe}">${classificacao}</span><br>
+    <strong>Comentário:</strong> ${comentario || '-'}
+  `;
+
+  atualizarResumoGeral();
+}
+
+function adicionarRanking(){
+  const nome = document.getElementById("rankingNome").value;
+  const nota = Number(document.getElementById("rankingNota").value) || 0;
+  const obs = document.getElementById("rankingObs").value;
+
+  ranking.push({ nome, nota, obs });
+  ranking.sort((a,b) => b.nota - a.nota);
+
+  localStorage.setItem("rankingEdyMichaelCover", JSON.stringify(ranking));
+  renderRanking();
+  atualizarResumoGeral();
+}
+
+function renderRanking(){
+  let html = "";
+
+  ranking.forEach((item, index) => {
+    html += `
+      <tr>
+        <td>${index + 1}º</td>
+        <td>${item.nome}</td>
+        <td>${item.nota.toFixed(1)}</td>
+        <td>${item.obs || '-'}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("rankingTabela").innerHTML = html || `
+    <tr>
+      <td colspan="4">Nenhum registro no ranking.</td>
+    </tr>
+  `;
+}
+
+function salvarTudo(){
+  salvarHorario();
+  salvarAgenda();
+  alert("Dados salvos no navegador com sucesso.");
+}
+
+function limparTudo(){
+  if(confirm("Deseja apagar os dados salvos deste sistema?")){
+    localStorage.removeItem("horarioAbizael");
+    localStorage.removeItem("agendaAbizael");
+    localStorage.removeItem("avaliacaoAbizael");
+    localStorage.removeItem("rankingEdyMichaelCover");
+    ranking = [];
+    location.reload();
+  }
+}
+
+function carregarDados(){
+  const horario = JSON.parse(localStorage.getItem("horarioAbizael"));
+  const agenda = JSON.parse(localStorage.getItem("agendaAbizael"));
+  const avaliacao = JSON.parse(localStorage.getItem("avaliacaoAbizael"));
+
+  if(horario){
+    document.getElementById("nomeDancarino").value = horario.nome || "Abizael";
+    document.getElementById("dataEnsaio").value = horario.data || "";
+    document.getElementById("inicioEnsaio").value = horario.inicio || "08:30";
+    document.getElementById("fimEnsaio").value = horario.fim || "10:00";
+    document.getElementById("localEnsaio").value = horario.local || "";
+    document.getElementById("obsEnsaio").value = horario.obs || "";
+
+    document.getElementById("resumoHorario").innerHTML = `
+      <strong>Dançarino:</strong> ${horario.nome}<br>
+      <strong>Data:</strong> ${horario.data || '-'}<br>
+      <strong>Horário:</strong> ${horario.inicio || '-'} até ${horario.fim || '-'}<br>
+      <strong>Local:</strong> ${horario.local || '-'}<br>
+      <strong>Observações:</strong> ${horario.obs || '-'}
+    `;
+  }
+
+  if(agenda){
+    document.getElementById("segunda").value = agenda.segunda || "";
+    document.getElementById("terca").value = agenda.terca || "";
+    document.getElementById("quarta").value = agenda.quarta || "";
+    document.getElementById("quinta").value = agenda.quinta || "";
+    document.getElementById("sexta").value = agenda.sexta || "";
+    document.getElementById("sabado").value = agenda.sabado || "";
+    document.getElementById("domingo").value = agenda.domingo || "";
+
+    document.getElementById("resumoAgenda").innerHTML = `
+      <strong>Segunda:</strong> ${agenda.segunda || '-'}<br>
+      <strong>Terça:</strong> ${agenda.terca || '-'}<br>
+      <strong>Quarta:</strong> ${agenda.quarta || '-'}<br>
+      <strong>Quinta:</strong> ${agenda.quinta || '-'}<br>
+      <strong>Sexta:</strong> ${agenda.sexta || '-'}<br>
+      <strong>Sábado:</strong> ${agenda.sabado || '-'}<br>
+      <strong>Domingo:</strong> ${agenda.domingo || '-'}
+    `;
+  }
+
+  if(avaliacao){
+    document.getElementById("ritmo").value = avaliacao.ritmo;
+    document.getElementById("coordenacao").value = avaliacao.coordenacao;
+    document.getElementById("energia").value = avaliacao.energia;
+    document.getElementById("memoria").value = avaliacao.memoria;
+    document.getElementById("postura").value = avaliacao.postura;
+    document.getElementById("presenca").value = avaliacao.presenca;
+    document.getElementById("comentarioAvaliacao").value = avaliacao.comentario || "";
+
+    let classe = "badge warn";
+    if(Number(avaliacao.media) >= 9) classe = "badge ok";
+    else if(Number(avaliacao.media) < 7) classe = "badge alert";
+
+    document.getElementById("resultadoAvaliacao").innerHTML = `
+      <strong>Média final:</strong> ${avaliacao.media}<br>
+      <strong>Classificação:</strong> <span class="${classe}">${avaliacao.classificacao}</span><br>
+      <strong>Comentário:</strong> ${avaliacao.comentario || '-'}
+    `;
+  }
+
+  renderRanking();
+  atualizarResumoGeral();
+}
+
+function atualizarResumoGeral(){
+  const horario = JSON.parse(localStorage.getItem("horarioAbizael"));
+  const agenda = JSON.parse(localStorage.getItem("agendaAbizael"));
+  const avaliacao = JSON.parse(localStorage.getItem("avaliacaoAbizael"));
+
+  document.getElementById("painelResumo").innerHTML = `
+    <strong>Horário do ensaio:</strong><br>
+    ${horario ? `${horario.nome} — ${horario.data || '-'} — ${horario.inicio || '-'} até ${horario.fim || '-'} — ${horario.local || '-'}` : 'Não definido'}<br><br>
+
+    <strong>Agenda semanal:</strong><br>
+    ${agenda ? `
+      Seg: ${agenda.segunda || '-'}<br>
+      Ter: ${agenda.terca || '-'}<br>
+      Qua: ${agenda.quarta || '-'}<br>
+      Qui: ${agenda.quinta || '-'}<br>
+      Sex: ${agenda.sexta || '-'}<br>
+      Sáb: ${agenda.sabado || '-'}<br>
+      Dom: ${agenda.domingo || '-'}
+    ` : 'Não definida'}<br><br>
+
+    <strong>Avaliação do Abizael:</strong><br>
+    ${avaliacao ? `Média ${avaliacao.media} — ${avaliacao.classificacao}` : 'Sem avaliação'}<br><br>
+
+    <strong>Total no ranking:</strong><br>
+    ${ranking.length} registro(s)
+  `;
+}
+
+carregarDados();
+</script>
+<hr>
+<a href="index01.html"><h2>Ir para a página 01</h2></a>
+</body>
+</html>
