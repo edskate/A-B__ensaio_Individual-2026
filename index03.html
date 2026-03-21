@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel Oficial da Equipe 2026 — EdyMichaelCover</title>
+<style>
+:root{
+  --bg:#070707;
+  --panel:#111111;
+  --panel-2:#171717;
+  --gold:#d4af37;
+  --gold-2:#f0d77a;
+  --text:#f4f1e8;
+  --muted:#bdb7a7;
+  --danger:#ff6b6b;
+  --ok:#79d98c;
+  --warn:#ffcf5a;
+  --line:rgba(212,175,55,.28);
+  --shadow:0 12px 30px rgba(0,0,0,.35);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:radial-gradient(circle at top right, rgba(212,175,55,.10), transparent 20%), linear-gradient(180deg,#050505,#0b0b0b 45%,#090909 100%);
+  color:var(--text);
+}
+.wrap{max-width:1500px;margin:auto;padding:24px;}
+.hero,.panel{
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+}
+.hero{background:linear-gradient(135deg, rgba(212,175,55,.12), rgba(255,255,255,.02));}
+.brand{
+  display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:999px;
+  color:var(--gold-2);background:rgba(212,175,55,.08);font-weight:700;margin-bottom:10px;
+}
+.clock{font-size:34px;font-weight:bold;color:var(--gold-2);font-family:monospace;letter-spacing:3px;margin-bottom:10px;}
+.status-bar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px;}
+h1,h2,h3{color:var(--gold-2);margin-top:0}
+p{color:var(--muted)}
+label{display:block;margin:10px 0 6px;color:var(--gold-2);font-weight:bold;}
+input,select,textarea{
+  width:100%;padding:11px;border-radius:12px;border:1px solid #333;background:#0e0e0e;color:white;
+}
+textarea{min-height:90px;resize:vertical}
+button{
+  padding:11px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:bold;margin:6px 6px 0 0;
+}
+.primary{background:var(--gold);color:black;}
+.secondary{background:#222;color:white;border:1px solid #444;}
+.danger{background:#4a1010;color:white;}
+.success{background:#163;color:#d9ffd9;}
+.warnbtn{background:#5e4700;color:#ffe28a;}
+table{width:100%;border-collapse:collapse;margin-top:14px;}
+th,td{padding:10px;border-bottom:1px solid #333;text-align:left;vertical-align:top;}
+th{color:var(--gold-2)}
+.small{font-size:13px;color:var(--muted)}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:bold;}
+.ok{background:#163;color:#aaffaa}
+.warn{background:#664400;color:#ffe28a}
+.alert{background:#5a1111;color:#ffb0b0}
+.cardline{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(212,175,55,.05);margin-top:12px;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
+.kpi{padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(212,175,55,.05)}
+.kpi strong{display:block;font-size:28px;color:var(--gold-2);margin-top:6px}
+.actions{margin-top:14px}
+.footer-note{text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+@media print{
+  body{background:white!important;color:black!important}
+  .hero,.panel,.kpi,.cardline{box-shadow:none!important;border:1px solid #999!important;background:white!important;color:black!important}
+  .clock,.brand,h1,h2,h3,label,th{color:black!important}
+  input,select,textarea{color:black!important;background:white!important;border:1px solid #999!important}
+  button{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="brand">EdyMichaelCover • Painel Oficial da Equipe 2026</div>
+    <div id="clock" class="clock">00:00:00</div>
+    <h1>Controle Completo de Entrada, Saída, Figurino e Disciplina</h1>
+    <p>Sistema preto & dourado com registro automático, multas progressivas, advertências, ranking da equipe, relatório geral e salvamento no navegador.</p>
+    <div class="actions">
+      <button class="primary" onclick="salvarTudoManual()">Salvar no navegador</button>
+      <button class="secondary" onclick="window.print()">Exportar em PDF</button>
+      <button class="warnbtn" onclick="registrarOcorrenciaManual()">Registrar ocorrência manual</button>
+      <button class="danger" onclick="limparTudo()">Limpar tudo</button>
+    </div>
+    <div class="status-bar">
+      <span id="statusSaida" class="badge warn">Saída bloqueada até 23:30</span>
+      <span class="badge ok">Salvamento automático ativo</span>
+      <span class="badge warn">Disciplina progressiva por histórico</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Resumo Geral</h2>
+    <div class="kpis">
+      <div class="kpi">Entradas registradas<strong id="kpiEntradas">0</strong></div>
+      <div class="kpi">Saídas registradas<strong id="kpiSaidas">0</strong></div>
+      <div class="kpi">Ocorrências disciplinares<strong id="kpiOcorrencias">0</strong></div>
+      <div class="kpi">Total em multas<strong id="kpiMultas">R$ 0,00</strong></div>
+    </div>
+    <div id="resumoGeral" class="cardline">Nenhum dado salvo ainda.</div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>1. Registro de Entrada</h2>
+      <label for="nomeEntrada">Dançarino</label>
+      <select id="nomeEntrada">
+        <option>Abizael</option>
+        <option>Patrick</option>
+        <option>Renan</option>
+        <option>Jhonny Mendes</option>
+      </select>
+      <label for="dataEntrada">Data</label>
+      <input type="date" id="dataEntrada">
+      <label for="horarioPadraoEntrada">Horário obrigatório de chegada</label>
+      <input type="time" id="horarioPadraoEntrada" value="20:00">
+      <label for="obsEntrada">Observações</label>
+      <textarea id="obsEntrada" placeholder="Ex.: chegou pronto, aqueceu no horário, alinhado com a equipe."></textarea>
+      <button class="primary" onclick="registrarEntrada()">Registrar entrada</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Dançarino</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Status</th>
+            <th>Multa</th>
+            <th>Advertência</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaEntrada"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>2. Registro de Saída</h2>
+      <label for="nomeSaida">Dançarino</label>
+      <select id="nomeSaida">
+        <option>Abizael</option>
+        <option>Patrick</option>
+        <option>Renan</option>
+        <option>Jhonny Mendes</option>
+      </select>
+      <label for="dataSaida">Data</label>
+      <input type="date" id="dataSaida">
+      <label for="obsSaida">Observações</label>
+      <textarea id="obsSaida" placeholder="Ex.: saiu após desmontagem, aguardou liberação, figurino conferido."></textarea>
+      <button class="primary" onclick="registrarSaida()">Registrar saída</button>
+      <div class="small">Saída só é permitida sem penalidade após 23:30.</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Dançarino</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Status</th>
+            <th>Multa</th>
+            <th>Advertência</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaSaida"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>3. Controle de Figurino e Conduta</h2>
+      <label for="nomeOcorrencia">Dançarino</label>
+      <select id="nomeOcorrencia">
+        <option>Abizael</option>
+        <option>Patrick</option>
+        <option>Renan</option>
+        <option>Jhonny Mendes</option>
+      </select>
+      <label for="tipoOcorrencia">Tipo de ocorrência</label>
+      <select id="tipoOcorrencia">
+        <option value="Figurino danificado">Figurino danificado</option>
+        <option value="Acessório faltando">Acessório faltando</option>
+        <option value="Indisciplina">Indisciplina</option>
+        <option value="Desrespeito à equipe">Desrespeito à equipe</option>
+        <option value="Comida/bebida com figurino">Comida/bebida com figurino</option>
+        <option value="Saída sem autorização">Saída sem autorização</option>
+      </select>
+      <label for="multaOcorrencia">Multa (R$)</label>
+      <input type="number" id="multaOcorrencia" value="50" min="0" step="10">
+      <label for="descricaoOcorrencia">Descrição</label>
+      <textarea id="descricaoOcorrencia" placeholder="Ex.: entrou com bebida no figurino, danificou peça, contrariou orientação, saiu sem liberação."></textarea>
+      <button class="primary" onclick="registrarOcorrencia()">Registrar ocorrência</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Dançarino</th>
+            <th>Tipo</th>
+            <th>Multa</th>
+            <th>Advertência</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaOcorrencias"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>4. Ranking de Disciplina da Equipe</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Dançarino</th>
+            <th>Erros</th>
+            <th>Total multas</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="rankingDisciplina"></tbody>
+      </table>
+      <div class="small">O ranking considera atrasos, saída antecipada e ocorrências disciplinares.</div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>5. Relatório Geral da Equipe</h2>
+    <div id="relatorioEquipe" class="cardline">Aguardando registros.</div>
+  </section>
+
+  <div class="footer-note">EdyMichaelCover • Controle oficial da equipe • salvamento automático no navegador</div>
+</div>
+
+<script>
+const STORAGE = {
+  entradas: 'edy_entradas_2026',
+  saidas: 'edy_saidas_2026',
+  ocorrencias: 'edy_ocorrencias_2026'
+};
+
+let entradas = JSON.parse(localStorage.getItem(STORAGE.entradas)) || [];
+let saidas = JSON.parse(localStorage.getItem(STORAGE.saidas)) || [];
+let ocorrencias = JSON.parse(localStorage.getItem(STORAGE.ocorrencias)) || [];
+
+function hojeISO(){
+  const n = new Date();
+  const y = n.getFullYear();
+  const m = String(n.getMonth()+1).padStart(2,'0');
+  const d = String(n.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+
+function horaAtual(){
+  const n = new Date();
+  return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+}
+
+function dinheiro(v){
+  return Number(v || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+
+function atualizarRelogio(){
+  const agora = new Date();
+  const h = String(agora.getHours()).padStart(2,'0');
+  const m = String(agora.getMinutes()).padStart(2,'0');
+  const s = String(agora.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+
+  const liberado = agora.getHours() > 23 || (agora.getHours() === 23 && agora.getMinutes() >= 30);
+  const badge = document.getElementById('statusSaida');
+  if(liberado){
+    badge.textContent = 'Saída liberada após 23:30';
+    badge.className = 'badge ok';
+  }else{
+    badge.textContent = 'Saída bloqueada até 23:30';
+    badge.className = 'badge warn';
+  }
+}
+setInterval(atualizarRelogio,1000);
+
+function salvarDados(){
+  localStorage.setItem(STORAGE.entradas, JSON.stringify(entradas));
+  localStorage.setItem(STORAGE.saidas, JSON.stringify(saidas));
+  localStorage.setItem(STORAGE.ocorrencias, JSON.stringify(ocorrencias));
+}
+
+function salvarTudoManual(){
+  salvarDados();
+  alert('Dados salvos no navegador com sucesso.');
+}
+
+function contarInfraEntrada(nome){
+  return entradas.filter(e => e.nome === nome && e.classe === 'alert').length;
+}
+
+function contarInfraSaida(nome){
+  return saidas.filter(s => s.nome === nome && s.classe === 'alert').length;
+}
+
+function contarInfraOcorrencia(nome){
+  return ocorrencias.filter(o => o.nome === nome).length;
+}
+
+function advertenciaProgressiva(qtd){
+  if(qtd <= 0) return '-';
+  if(qtd === 1) return '1º aviso';
+  if(qtd === 2) return '2º aviso';
+  return 'AFASTAMENTO';
+}
+
+function registrarEntrada(){
+  const nome = document.getElementById('nomeEntrada').value;
+  const data = document.getElementById('dataEntrada').value || hojeISO();
+  const obrigatorio = document.getElementById('horarioPadraoEntrada').value || '20:00';
+  const hora = horaAtual();
+  const obs = document.getElementById('obsEntrada').value.trim();
+
+  let status = 'No horário';
+  let classe = 'ok';
+  let multa = 0;
+  let advertencia = '-';
+
+  if(hora > obrigatorio){
+    status = 'ATRASO';
+    classe = 'alert';
+    const atrasosAnteriores = contarInfraEntrada(nome);
+    if(atrasosAnteriores === 0) multa = 30;
+    else if(atrasosAnteriores === 1) multa = 60;
+    else multa = 120;
+    advertencia = advertenciaProgressiva(atrasosAnteriores + 1);
+  }
+
+  entradas.unshift({ nome, data, hora, obrigatorio, status, classe, multa, advertencia, obs });
+  salvarDados();
+  renderTudo();
+
+  if(classe === 'alert'){
+    alert(`⚠ ${nome} registrado com atraso. ${advertencia} aplicado.`);
+  }
+}
+
+function registrarSaida(){
+  const nome = document.getElementById('nomeSaida').value;
+  const data = document.getElementById('dataSaida').value || hojeISO();
+  const hora = horaAtual();
+  const obs = document.getElementById('obsSaida').value.trim();
+
+  const hh = Number(hora.split(':')[0]);
+  const mm = Number(hora.split(':')[1]);
+
+  let status = 'Saída permitida';
+  let classe = 'ok';
+  let multa = 0;
+  let advertencia = '-';
+
+  if(hh < 23 || (hh === 23 && mm < 30)){
+    status = 'SAÍDA ANTECIPADA';
+    classe = 'alert';
+    const anteriores = contarInfraSaida(nome);
+    if(anteriores === 0) multa = 50;
+    else if(anteriores === 1) multa = 100;
+    else multa = 200;
+    advertencia = advertenciaProgressiva(anteriores + 1);
+  }
+
+  saidas.unshift({ nome, data, hora, status, classe, multa, advertencia, obs });
+  salvarDados();
+  renderTudo();
+
+  if(classe === 'alert'){
+    alert(`⚠ ${nome} tentou sair antes das 23:30. ${advertencia} aplicado.`);
+  }
+}
+
+function registrarOcorrencia(){
+  const nome = document.getElementById('nomeOcorrencia').value;
+  const tipo = document.getElementById('tipoOcorrencia').value;
+  const multa = Number(document.getElementById('multaOcorrencia').value) || 0;
+  const descricao = document.getElementById('descricaoOcorrencia').value.trim();
+  const anteriores = contarInfraOcorrencia(nome);
+  const advertencia = advertenciaProgressiva(anteriores + 1);
+
+  ocorrencias.unshift({ nome, tipo, multa, advertencia, descricao });
+  salvarDados();
+  renderTudo();
+}
+
+function registrarOcorrenciaManual(){
+  document.getElementById('tipoOcorrencia').focus();
+  window.scrollTo({ top: document.getElementById('tipoOcorrencia').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+}
+
+function renderEntradas(){
+  let html = '';
+  entradas.forEach(e => {
+    html += `<tr>
+      <td>${e.nome}</td>
+      <td>${e.data}</td>
+      <td>${e.hora}</td>
+      <td><span class="badge ${e.classe}">${e.status}</span></td>
+      <td>${dinheiro(e.multa)}</td>
+      <td>${e.advertencia}</td>
+    </tr>`;
+  });
+  document.getElementById('tabelaEntrada').innerHTML = html || '<tr><td colspan="6">Nenhuma entrada registrada.</td></tr>';
+}
+
+function renderSaidas(){
+  let html = '';
+  saidas.forEach(s => {
+    html += `<tr>
+      <td>${s.nome}</td>
+      <td>${s.data}</td>
+      <td>${s.hora}</td>
+      <td><span class="badge ${s.classe}">${s.status}</span></td>
+      <td>${dinheiro(s.multa)}</td>
+      <td>${s.advertencia}</td>
+    </tr>`;
+  });
+  document.getElementById('tabelaSaida').innerHTML = html || '<tr><td colspan="6">Nenhuma saída registrada.</td></tr>';
+}
+
+function renderOcorrencias(){
+  let html = '';
+  ocorrencias.forEach(o => {
+    html += `<tr>
+      <td>${o.nome}</td>
+      <td>${o.tipo}</td>
+      <td>${dinheiro(o.multa)}</td>
+      <td>${o.advertencia}</td>
+      <td>${o.descricao || '-'}</td>
+    </tr>`;
+  });
+  document.getElementById('tabelaOcorrencias').innerHTML = html || '<tr><td colspan="5">Nenhuma ocorrência registrada.</td></tr>';
+}
+
+function renderRanking(){
+  const nomes = ['Abizael','Patrick','Renan','Jhonny Mendes'];
+  const mapa = {};
+  nomes.forEach(n => mapa[n] = { erros:0, multas:0 });
+
+  entradas.forEach(e => {
+    if(e.classe === 'alert'){
+      mapa[e.nome] ??= { erros:0, multas:0 };
+      mapa[e.nome].erros += 1;
+      mapa[e.nome].multas += Number(e.multa || 0);
+    }
+  });
+
+  saidas.forEach(s => {
+    if(s.classe === 'alert'){
+      mapa[s.nome] ??= { erros:0, multas:0 };
+      mapa[s.nome].erros += 1;
+      mapa[s.nome].multas += Number(s.multa || 0);
+    }
+  });
+
+  ocorrencias.forEach(o => {
+    mapa[o.nome] ??= { erros:0, multas:0 };
+    mapa[o.nome].erros += 1;
+    mapa[o.nome].multas += Number(o.multa || 0);
+  });
+
+  const lista = Object.keys(mapa).map(nome => ({ nome, erros: mapa[nome].erros, multas: mapa[nome].multas }));
+  lista.sort((a,b) => b.erros - a.erros || b.multas - a.multas || a.nome.localeCompare(b.nome));
+
+  let html = '';
+  lista.forEach((item, i) => {
+    const status = item.erros === 0 ? '<span class="badge ok">Alinhado</span>' : item.erros < 3 ? '<span class="badge warn">Atenção</span>' : '<span class="badge alert">Crítico</span>';
+    html += `<tr>
+      <td>${i + 1}º</td>
+      <td>${item.nome}</td>
+      <td>${item.erros}</td>
+      <td>${dinheiro(item.multas)}</td>
+      <td>${status}</td>
+    </tr>`;
+  });
+  document.getElementById('rankingDisciplina').innerHTML = html || '<tr><td colspan="5">Sem dados para ranking.</td></tr>';
+}
+
+function atualizarResumo(){
+  const multasTotal = [...entradas, ...saidas].reduce((acc, x) => acc + Number(x.multa || 0), 0) + ocorrencias.reduce((acc,x) => acc + Number(x.multa || 0), 0);
+  document.getElementById('kpiEntradas').textContent = entradas.length;
+  document.getElementById('kpiSaidas').textContent = saidas.length;
+  document.getElementById('kpiOcorrencias').textContent = ocorrencias.length;
+  document.getElementById('kpiMultas').textContent = dinheiro(multasTotal);
+
+  const ultimoEntrada = entradas[0] ? `${entradas[0].nome} às ${entradas[0].hora} em ${entradas[0].data}` : 'Nenhuma';
+  const ultimaSaida = saidas[0] ? `${saidas[0].nome} às ${saidas[0].hora} em ${saidas[0].data}` : 'Nenhuma';
+  const ultimaOcorrencia = ocorrencias[0] ? `${ocorrencias[0].nome} — ${ocorrencias[0].tipo}` : 'Nenhuma';
+
+  document.getElementById('resumoGeral').innerHTML = `
+    <strong>Última entrada:</strong> ${ultimoEntrada}<br>
+    <strong>Última saída:</strong> ${ultimaSaida}<br>
+    <strong>Última ocorrência:</strong> ${ultimaOcorrencia}<br>
+    <strong>Total geral em multas:</strong> ${dinheiro(multasTotal)}
+  `;
+
+  const nomes = ['Abizael','Patrick','Renan','Jhonny Mendes'];
+  const linhas = nomes.map(nome => {
+    const atrasos = entradas.filter(e => e.nome === nome && e.classe === 'alert').length;
+    const antecipadas = saidas.filter(s => s.nome === nome && s.classe === 'alert').length;
+    const ocorr = ocorrencias.filter(o => o.nome === nome).length;
+    const multas = entradas.filter(e => e.nome === nome).reduce((a,b)=>a+Number(b.multa||0),0)
+      + saidas.filter(s => s.nome === nome).reduce((a,b)=>a+Number(b.multa||0),0)
+      + ocorrencias.filter(o => o.nome === nome).reduce((a,b)=>a+Number(b.multa||0),0);
+    return `<strong>${nome}</strong>: atrasos ${atrasos}, saídas antecipadas ${antecipadas}, ocorrências ${ocorr}, total ${dinheiro(multas)}`;
+  }).join('<br>');
+
+  document.getElementById('relatorioEquipe').innerHTML = linhas;
+}
+
+function renderTudo(){
+  renderEntradas();
+  renderSaidas();
+  renderOcorrencias();
+  renderRanking();
+  atualizarResumo();
+}
+
+function limparTudo(){
+  if(confirm('Deseja apagar todos os dados salvos deste painel?')){
+    localStorage.removeItem(STORAGE.entradas);
+    localStorage.removeItem(STORAGE.saidas);
+    localStorage.removeItem(STORAGE.ocorrencias);
+    entradas = [];
+    saidas = [];
+    ocorrencias = [];
+    renderTudo();
+  }
+}
+
+function preencherDatas(){
+  const hoje = hojeISO();
+  document.getElementById('dataEntrada').value = hoje;
+  document.getElementById('dataSaida').value = hoje;
+}
+
+preencherDatas();
+atualizarRelogio();
+renderTudo();
+</script>
+</body>
+</html>

@@ -411,6 +411,7 @@ function atualizarRelogio(){
   let m = agora.getMinutes().toString().padStart(2,'0');
   let s = agora.getSeconds().toString().padStart(2,'0');
   document.getElementById("clock").innerHTML = h + ":" + m + ":" + s;
+  verificarBloqueio();
 }
 setInterval(atualizarRelogio,1000);
 atualizarRelogio();
@@ -630,6 +631,7 @@ function carregarDados(){
 
   renderRanking();
   atualizarResumoGeral();
+  verificarBloqueio();
 }
 
 function atualizarResumoGeral(){
@@ -658,6 +660,25 @@ function atualizarResumoGeral(){
     <strong>Total no ranking:</strong><br>
     ${ranking.length} registro(s)
   `;
+}
+
+function verificarBloqueio(){
+  const horario = JSON.parse(localStorage.getItem("horarioAbizael"));
+  let bloqueado = true;
+  if (horario && horario.data && horario.inicio && horario.fim) {
+    const now = new Date();
+    const currentDate = now.toISOString().split('T')[0];
+    const currentTime = now.toTimeString().slice(0,5);
+    if (currentDate === horario.data && currentTime >= horario.inicio && currentTime <= horario.fim) {
+      bloqueado = false;
+    }
+  } else {
+    bloqueado = false;
+  }
+  const elements = document.querySelectorAll('input, select, textarea, button');
+  elements.forEach(el => {
+    el.disabled = bloqueado;
+  });
 }
 
 carregarDados();
